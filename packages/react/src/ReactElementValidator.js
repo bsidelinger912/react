@@ -27,7 +27,7 @@ import warning from 'shared/warning';
 import warningWithoutStack from 'shared/warningWithoutStack';
 
 import ReactCurrentOwner from './ReactCurrentOwner';
-import {isValidElement, createElement, cloneElement} from './ReactElement';
+import { isValidElement, createElement, cloneElement } from './ReactElement';
 import ReactDebugCurrentFrame, {
   setCurrentlyValidatingElement,
 } from './ReactDebugCurrentFrame';
@@ -127,7 +127,7 @@ function validateExplicitKey(element, parentType) {
     warning(
       false,
       'Each child in a list should have a unique "key" prop.' +
-        '%s%s See https://fb.me/react-warning-keys for more information.',
+      '%s%s See https://fb.me/react-warning-keys for more information.',
       currentComponentErrorInfo,
       childOwner,
     );
@@ -226,7 +226,7 @@ function validatePropTypes(element) {
     warningWithoutStack(
       type.getDefaultProps.isReactClassApproved,
       'getDefaultProps is only used on classic React.createClass ' +
-        'definitions. Use a static property named `defaultProps` instead.',
+      'definitions. Use a static property named `defaultProps` instead.',
     );
   }
 }
@@ -241,11 +241,11 @@ function validateFragmentProps(fragment) {
   const keys = Object.keys(fragment.props);
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    if (key !== 'children' && key !== 'key') {
+    if (key !== 'children' && key !== 'key' && key !== 'onClick') {
       warning(
         false,
         'Invalid prop `%s` supplied to `React.Fragment`. ' +
-          'React.Fragment can only have `key` and `children` props.',
+        'React.Fragment can only have `key` and `children` props.',
         key,
       );
       break;
@@ -300,8 +300,8 @@ export function createElementWithValidation(type, props, children) {
     warning(
       false,
       'React.createElement: type is invalid -- expected a string (for ' +
-        'built-in components) or a class/function (for composite ' +
-        'components) but got: %s.%s',
+      'built-in components) or a class/function (for composite ' +
+      'components) but got: %s.%s',
       typeString,
       info,
     );
@@ -342,11 +342,11 @@ export function createFactoryWithValidation(type) {
   if (__DEV__) {
     Object.defineProperty(validatedFactory, 'type', {
       enumerable: false,
-      get: function() {
+      get: function () {
         lowPriorityWarning(
           false,
           'Factory.type is deprecated. Access the class directly ' +
-            'before passing it to createFactory.',
+          'before passing it to createFactory.',
         );
         Object.defineProperty(this, 'type', {
           value: type,

@@ -5,8 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {HostComponent} from './ReactWorkTags';
+import { HostComponent, Fragment } from './ReactWorkTags';
 
+// NOTE: updated parent traversal to include Fragments as well as host nodes
+// TODO: where else is this used?  what could break?
 function getParent(inst) {
   do {
     inst = inst.return;
@@ -15,7 +17,7 @@ function getParent(inst) {
     // events to their parent. We could also go through parentNode on the
     // host node but that wouldn't work for React Native and doesn't let us
     // do the portal feature.
-  } while (inst && inst.tag !== HostComponent);
+  } while (inst && inst.tag !== HostComponent && inst.tag !== Fragment);
   if (inst) {
     return inst;
   }
@@ -89,8 +91,12 @@ export function traverseTwoPhase(inst, fn, arg) {
     path.push(inst);
     inst = getParent(inst);
   }
+
+  console.log("***********", "do we have fragments in the path??");
+  console.log(path);
+
   let i;
-  for (i = path.length; i-- > 0; ) {
+  for (i = path.length; i-- > 0;) {
     fn(path[i], 'captured', arg);
   }
   for (i = 0; i < path.length; i++) {
@@ -140,7 +146,7 @@ export function traverseEnterLeave(from, to, fn, argFrom, argTo) {
   for (let i = 0; i < pathFrom.length; i++) {
     fn(pathFrom[i], 'bubbled', argFrom);
   }
-  for (let i = pathTo.length; i-- > 0; ) {
+  for (let i = pathTo.length; i-- > 0;) {
     fn(pathTo[i], 'captured', argTo);
   }
 }
