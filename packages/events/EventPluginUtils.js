@@ -8,6 +8,7 @@
 import {invokeGuardedCallbackAndCatchFirstError} from 'shared/ReactErrorUtils';
 import invariant from 'shared/invariant';
 import warningWithoutStack from 'shared/warningWithoutStack';
+import { Fragment } from 'shared/ReactWorkTags';
 
 export let getFiberCurrentPropsFromNode = null;
 export let getInstanceFromNode = null;
@@ -65,7 +66,10 @@ if (__DEV__) {
  */
 function executeDispatch(event, listener, inst) {
   const type = event.type || 'unknown-event';
-  event.currentTarget = getNodeFromInstance(inst);
+  // This blows up because we don't have the target!!!!!!!!!!!!!!!
+  // Fragments can't have a current target since there's no DOM Node
+  event.currentTarget = inst.tag === Fragment ? null : getNodeFromInstance(inst);
+
   invokeGuardedCallbackAndCatchFirstError(type, listener, undefined, event);
   event.currentTarget = null;
 }

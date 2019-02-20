@@ -465,7 +465,8 @@ function updateFragment(
   workInProgress: Fiber,
   renderExpirationTime: ExpirationTime,
 ) {
-  const nextChildren = workInProgress.pendingProps;
+  /// This is probably where my issue was!!!!!!!!!!!!!!!!!!!!
+  const nextChildren = workInProgress.pendingProps.children;
   reconcileChildren(
     current,
     workInProgress,

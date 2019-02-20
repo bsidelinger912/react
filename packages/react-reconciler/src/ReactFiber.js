@@ -454,7 +454,7 @@ export function createFiberFromTypeAndProps(
     getTag: switch (type) {
       case REACT_FRAGMENT_TYPE:
         return createFiberFromFragment(
-          pendingProps.children,
+          pendingProps,
           mode,
           expirationTime,
           key,
@@ -565,12 +565,12 @@ export function createFiberFromElement(
 }
 
 export function createFiberFromFragment(
-  elements: ReactFragment,
+  pendingProps: ReactFragment,
   mode: TypeOfMode,
   expirationTime: ExpirationTime,
   key: null | string,
 ): Fiber {
-  const fiber = createFiber(Fragment, elements, key, mode);
+  const fiber = createFiber(Fragment, pendingProps, key, mode);
   fiber.expirationTime = expirationTime;
   return fiber;
 }

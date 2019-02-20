@@ -493,6 +493,16 @@ function ChildReconciler(shouldTrackSideEffects) {
           created.return = returnFiber;
           return created;
         }
+        case REACT_FRAGMENT_TYPE: {
+          const created = createFiberFromFragment(
+            newChild,
+            returnFiber.mode,
+            expirationTime,
+            null,
+          );
+          created.return = returnFiber;
+          return created;
+        }
       }
 
       if (isArray(newChild) || getIteratorFn(newChild)) {
@@ -578,6 +588,19 @@ function ChildReconciler(shouldTrackSideEffects) {
             return null;
           }
         }
+        case REACT_FRAGMENT_TYPE: {
+          if (key !== null) {
+            return null;
+          }
+
+          return updateFragment(
+            returnFiber,
+            oldFiber,
+            newChild,
+            expirationTime,
+            null,
+          );
+        }
       }
 
       if (isArray(newChild) || getIteratorFn(newChild)) {
@@ -658,6 +681,16 @@ function ChildReconciler(shouldTrackSideEffects) {
             matchedFiber,
             newChild,
             expirationTime,
+          );
+        }
+        case REACT_FRAGMENT_TYPE: {
+          const matchedFiber = existingChildren.get(newIdx) || null;
+          return updateFragment(
+            returnFiber,
+            matchedFiber,
+            newChild,
+            expirationTime,
+            null,
           );
         }
       }
@@ -1150,7 +1183,7 @@ function ChildReconciler(shouldTrackSideEffects) {
 
     if (element.type === REACT_FRAGMENT_TYPE) {
       const created = createFiberFromFragment(
-        element.props.children,
+        element.props,
         returnFiber.mode,
         expirationTime,
         element.key,

@@ -92,9 +92,6 @@ export function traverseTwoPhase(inst, fn, arg) {
     inst = getParent(inst);
   }
 
-  console.log("***********", "do we have fragments in the path??");
-  console.log(path);
-
   let i;
   for (i = path.length; i-- > 0;) {
     fn(path[i], 'captured', arg);
